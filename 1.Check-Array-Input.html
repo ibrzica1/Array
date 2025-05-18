@@ -24,6 +24,9 @@
 
     <script>
 
+      var string = 'w3resource';
+      var array = [1, 2, 4, 0];
+
       var isArray = function(input) {
         if (toString.call(input) === "[object Array]") {
           return true;
@@ -33,6 +36,8 @@
 
       console.log(isArray('w3resource'));
       console.log(isArray([1, 2, 4, 0]));
+      console.log(Array.isArray(string));
+      console.log(Array.isArray(array));
 
     </script>
   </body>
