@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+      var array1 = ["apple", "banana", "pear"];
+      array1.push("orange");
+      array1.unshift("pineapple")
+      console.log(array1);
+
+      var array2 = [1,2,4,5];
+      array2.splice(2,0,3);
+      console.log(array2);
+
+      var insertOnPosition = function (array,element,position) {
+        array.splice(position,0,element);
+        console.log(array);
+      }
+
+      insertOnPosition(array2,9,2);
+
+      var insertIfNotThere = function(array,element) {
+        for (i=0; i<array.length; i++) {
+          if (array[i] == element) {
+            console.log(array);
+            return array;
+          }
+        }
+        array.push(element);
+        console.log(array);
+        return array
+      }
+
+      insertIfNotThere(array2,6);
+
+      var insertAfterEven = function(array,element) {
+        for (i=0; i<array.length; i++) {
+          if (array[i]%2 == 0) {
+            array.splice(i+1,0,element);
+          }
+        }
+        console.log(array);
+        return array;
+      }
+
+      insertAfterEven(array2,"x");
+
+      var insertAll = function (arr1,arr2, index) {
+        for (i=0; i<arr2.length; i++) {
+          arr1.splice(index+1,0,arr2[i]);
+          index++
+        }
+        console.log(arr1);
+      }
+
+      insertAll(array2,array1,2);
+
+
+    </script>
+  </body>
+</html>
