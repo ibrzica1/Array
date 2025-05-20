@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+      let arr1 = [1,2,3,4,5,6];
+
+      let removeEvens = function(arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i] % 2 === 0) {
+            arr.splice(i,1);
+          }
+        }
+        console.log(arr);
+        return arr;
+      }
+      removeEvens(arr1);
+
+      let arr2 = [1,"a","b",true,"c",3];
+
+      let keepStrings = function (arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (typeof arr[i] !== "string") {
+            arr.splice(i,1);
+          }
+        }
+        console.log(arr);
+        return arr;
+      }
+      keepStrings(arr2);
+
+      let arr3 = [1, null, 2, undefined, 3];
+
+      function removeEmpty (arr) {
+         for (let i = 0; i < arr.length; i++) {
+          if (arr[i] === null || arr[i] === undefined) {
+            arr.splice(i,1);
+          }
+         }
+         console.log(arr);
+         return arr;
+      }
+      removeEmpty(arr3);
+
+      let arr4 = [true, false, 1, 0, "true"];
+
+      var keepBoolean = function(arr) {
+        let arr2 = [];
+        arr.forEach(element => {
+          if (typeof element === "boolean") {
+            arr2.push(element);
+          }
+        });
+        console.log(arr2);
+        return arr2;
+      }
+      keepBoolean(arr4);
+
+      let array5 = [1, 2.5, 3, 4.1, 5, 6.6, 7.9];
+
+      var removeFloat = function (arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (!Number.isInteger(arr[i])) {
+            arr.splice(i,1);
+          }
+        }
+        console.log(arr);
+         return arr;
+      }
+      removeFloat(array5);
+
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+      let array = [1,2,3,4,5];
+      
+      let removeLastElement = function(arr) {
+        arr.pop();
+        console.log(arr);
+      }
+      removeLastElement(array);
+
+      let removeFirstElement = function(arr) {
+        arr.shift();
+        console.log(arr);
+      }
+      removeFirstElement(array);
+
+      let array2 = [0,1,2,0,3,0,4];
+
+      let removeElement = function(arr,element) {
+        let arr2 = [];
+        arr.forEach(value => {
+          if(value !== element) {
+            arr2.push(value)
+          }
+        });
+        arr = arr2;
+        console.log(arr);
+      }
+      removeElement(array2,0);
+
+      let array3 = ["dog","cat","horse","eagle"];
+     
+
+      let removeShorterOf5 = function(arr) {
+        for(let i= arr.length -1; i>=0; i--) {
+          if(arr[i].length < 4) {
+            arr.splice(i,1);
+          }
+        }
+        console.log(arr);
+        return arr;
+      }
+
+      removeShorterOf5(array3);
+
+      let array4 = [3,-1,5,-9,0,12];
+
+      let removeNegative = function(arr) {
+        for (let i = arr.length - 1; i >= 0; i--) {
+          if (arr[i] < 0) {
+            arr.splice(i,1);
+          }
+        }
+        console.log(arr);
+        return arr;
+      }
+      removeNegative(array4);
+
+      let array5 = [1,2,2,3,4,4,5];
+
+      let removeDuplicates = function(arr) {
+        
+        return [...new Set(arr)];
+        
+      }
+      console.log(removeDuplicates(array5));
+
+      let array6 = [1, "a", true, 2, null, 3, "5"];
+
+      let removeIfNotNumber = function(arr) {
+        let arr2 = [];
+        arr.forEach((element) => {
+          if (typeof element === "number") {
+            arr2.push(element);
+          }
+        })
+        arr = arr2;
+        console.log(arr);
+        return arr;
+      }
+      removeIfNotNumber(array6);
+
+      let array7 = [
+      { name: "Ana" },
+      { surname: "Peric"},
+      { name: "Marko"},
+      { years: 30}
+      ];
+
+      let keepOnlyName = function(arr) {
+        let arr2 = [];
+        arr.forEach((object) => {
+          if ( object.hasOwnProperty("name")) {
+            arr2.push(object);
+          }
+        })
+        arr = arr2;
+        console.log(arr);
+        return arr;
+      }
+      keepOnlyName(array7);
+      
+      
+      
+
+
+    </script>
+  </body>
+</html>
