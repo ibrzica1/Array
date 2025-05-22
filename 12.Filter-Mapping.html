@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+      let proizvodi = [
+      { naziv: "Telefon", cena: 500 },
+      { naziv: "Laptop", cena: 1500 },
+      { naziv: "Tablet", cena: 800 },
+      { naziv: "Monitor", cena: 1200 },
+      { naziv: "Tastatura", cena: 300 }
+      ];
+      let expensiveArticles = proizvodi.filter(x => x.cena > 1000);
+      console.log(expensiveArticles.map(x => x.naziv)); 
+
+      let korisnici = [
+        { ime: "Ana", godine: 25, aktivan: true },
+        { ime: "Marko", godine: 17, aktivan: true },
+        { ime: "Jelena", godine: 30, aktivan: false },
+        { ime: "Nikola", godine: 22, aktivan: true },
+        { ime: "Ivana", godine: 19, aktivan: false },
+        { ime: "Milos", godine: 35, aktivan: true }
+      ];
+      let activeAdults = korisnici
+                          .filter(x => x.aktivan && x.godine > 18)
+                          .map(x => x.ime)
+                          .sort();
+      console.log(activeAdults);    
+      
+      let articles = [
+        { naziv: "Telefon", kolicina: 10, cena: 500 },
+        { naziv: "Laptop", kolicina: 0, cena: 1500 },
+        { naziv: "Tablet", kolicina: 5, cena: 800 },
+        { naziv: "Monitor", kolicina: 2, cena: 1200 },
+        { naziv: "Tastatura", kolicina: 0, cena: 300 }
+      ];
+
+      let total = articles
+                  .filter(x => x.kolicina > 0)
+                  .map(x => ({
+                    naziv: x.naziv,
+                    ukupno: x.kolicina * x.cena
+                  }));
+      console.log(total);    
+      
+                             
+
+
+    </script>
+  </body>
+</html>
