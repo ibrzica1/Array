@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+      let numbers = [3, 7, 10];
+      var multiplyBy2 = function(number) {
+        return number * 2;
+      }
+     let result = numbers.map(multiplyBy2);
+     console.log(result);
+
+     let reci = ["JavaScript", "je", "zabavan"];
+     result = reci.map(x => x.length);
+     console.log(result);
+
+     let imena = ["Milan", "Jovana", "Nikola"];
+     result = imena.map(x => "Mr./Ms. " + x);
+    console.log(result);
+
+    let proizvodi = [
+      { naziv: "Telefon", cena: 500 },
+      { naziv: "Laptop", cena: 1500 },
+      { naziv: "Tablet", cena: 800 }
+    ];
+    result = proizvodi.map(x => x.naziv);
+    console.log(result);
+
+    let godineRodjenja = [1990, 1985, 2000];
+    result = godineRodjenja.map(x => 2025 - x);
+    console.log(result);
+
+    </script>
+  </body>
+</html>
