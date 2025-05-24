@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+<button id="button">Click Me</button>
+<h1 id="text"></h1>
+
+<input id="input1" type="text" placeholder="Input something">
+<button id="append1">Append</button>
+<ul id="list1"></ul>
+
+<button id="clickCounter">Click Counter</button>
+<p>Click amount <span id="counter" style="color: green; font-weight: 700;">0</span></p>
+
+
+<button id="hide">Hide/Show</button>
+<div id="text3">This is some text that will be hidden</div>
+
+<h1>ToDo List</h1>
+<input id="task5" type="text" placeholder="Enter task">
+<button id="enter">Enter</button>
+<ul id="list5"></ul>
+
+
+    <script>
+      const taskInput = document.getElementById("task5");
+      const enter = document.getElementById("enter");
+      const list5 = document.getElementById("list5");
+
+      enter.addEventListener('click', () => {
+        const li = document.createElement("li");
+       
+        li.textContent = taskInput.value;
+        li.style.cursor = "pointer";
+        li.style.width = "500px";
+        li.addEventListener("click", ()=>{
+          li.style.textDecoration = "line-through";
+        })
+        list5.appendChild(li);
+      
+      })
+
+
+      const button = document.getElementById("button");
+      const text = document.getElementById("text");
+
+      button.addEventListener('click',()=>{
+        text.innerHTML = "Pozdrav iz JavaScripta";
+      });
+
+      let input1 = document.getElementById("input1");
+      const append1 = document.getElementById("append1");
+      const list1 = document.getElementById("list1");
+
+      append1.addEventListener('click', () => {
+        const li = document.createElement("li");
+        li.textContent = input1.value;
+        list1.appendChild(li);
+        input1.value = "";
+      })
+
+      const clickCounter = document.getElementById("clickCounter");
+      const counter = document.getElementById("counter");
+      let number = 0;
+
+      clickCounter.addEventListener('click', () => {
+        number++
+        counter.innerHTML = number;
+      })
+
+      const hideButton = document.getElementById("hide");
+      const text3 = document.getElementById("text3");
+
+      hideButton.addEventListener("click", ()=> {
+        if(text3.style.display === "none") {
+          text3.style.display = "block";
+        }
+        else {
+        text3.style.display = "none";
+        }
+      })
+
+
+
+
+
+    </script>
+  </body>
+</html>
