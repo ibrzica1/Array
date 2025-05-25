@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<style>
+  div {
+      display: flex;
+      flex-direction: column;
+  }
+
+  div input {
+    width: 400px;
+    margin-bottom: 10px;
+  }
+
+  div button {
+    width: 100px;
+  }
+
+  #message {
+    width: 402px;
+    margin-bottom: 10px;
+  }
+</style>
+    
+
+  </head>
+  <body>
+    <div>
+      <input id="name" type="text" placeholder="Enter your name">
+      <input id="email" type="text" placeholder="Enter your email">
+      <textarea name="message" id="message" placeholder="Enter your message here" rows="5"></textarea>
+      <button id="button">Send</button>
+      <p id="result"></p>
+    </div>
+
+    <script>
+      const name = document.getElementById("name");
+      const email = document.getElementById("email");
+      const button = document.getElementById("button");
+      const result = document.getElementById("result");
+      const message = document.getElementById("message");
+
+      button.addEventListener("click", () => {
+        if(name.value.trim() === "" || email.value.trim() === "" || message.value.trim() === "") {
+          result.innerHTML = "ERROR";
+          result.style.color = "red";
+        }
+        else if (!email.value.includes("@")) {
+          result.innerHTML = "ERROR";
+          result.style.color = "red";
+        }
+        else {
+          result.innerHTML = "SUCCESS";
+          result.style.color = "green";
+          name.value = "";
+          email.value = "";
+          message.value = "";
+        }
+        
+      })
+
+
+    </script>
+  </body>
+</html>
