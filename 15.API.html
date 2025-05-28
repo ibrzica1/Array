@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+    <input type="file" id="csvFileInput" accept=".csv" />
+
+    <script>
+
+      
+      document.getElementById('csvFileInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const text = e.target.result;
+    
+    // Parsiraj redove
+    const rows = text.trim().split('\n');
+
+    // Skini navodnike i podijeli kolone
+    const header = rows[0].split(',').map(col => col.replace(/"/g, ''));
+
+    const priceIndex = header.indexOf("price");
+
+    if (priceIndex === -1) {
+      console.error("Kolona 'price' nije pronađena.");
+      return;
+    }
+
+    // Parsiraj svaki red i dohvat cijene
+    const prices = rows.slice(1).map(row => {
+      const columns = row.split(',').map(cell => cell.replace(/"/g, ''));
+      return parseFloat(columns[priceIndex]);
+    });
+
+    console.log("Cijene:", prices);
+  };
+
+  reader.readAsText(file);
+});
+
+  
+
+    </script>
+  </body>
+</html>
