@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+      function isEven(number) {
+        const promise = new Promise((resolve,reject) => {
+          if (number % 2 === 0) {
+            resolve("Number is even");
+          }
+          else {
+            reject("Number is not even")
+          }
+        })
+        
+        return promise;
+      }
+      isEven(3).then((result) => {
+          
+          console.log(result);
+          return true;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    const ana = { name: "Ana", age: 25 };
+    const marko = { name: "Marko", age: 30 };
+    const iva = { name: "Iva", age: 22 };
+
+     function fetchUser(user) {
+      return new Promise((resolve, reject) => {
+        setTimeout(()=>{
+          const allOk = true;
+          if(allOk) {
+            resolve(user);
+          }
+          else {
+            reject("Cant find user");
+          }
+        },randomTime(1,10))
+      })
+        
+      
+     }
+     fetchUser(ana).then((result) => {
+            console.log("Name: " + result.name + " Age: " + result.age);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+    function addAsync(a, b) {
+      isEven(a).then((result) => {
+        console.log(result);
+        console.log(a + b);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      
+    }      
+    addAsync(2,3);
+
+    function randomTime(min, max) {
+      return (Math.floor(Math.random() * (max - min + 1)) + min)*1000;
+    }
+    
+    Promise.all([fetchUser(iva),
+      fetchUser(marko),
+      fetchUser(ana),
+      fetchUser(iva),
+      fetchUser(marko)
+    ]).then((users) => {
+      users.forEach((user) => {
+        console.log("Name: " + user.name + ", Age: " + user.age);
+      });
+    })
+    .catch((error) => {
+      console.log("Error:", error);
+    });
+
+    
+    Promise.race([fetchUser(ana),fetchUser(iva)])
+    .then((result) => {
+      console.log("Pobjednik je " + result.name)
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+
+    
+     
+
+
+    </script>
+  </body>
+</html>

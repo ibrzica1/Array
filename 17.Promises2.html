@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+<input id="username" type="text" placeholder="Username">
+<input id="password" type="text" placeholder="Password">
+<button id="submit">Submit</button>
+
+    <script>
+      function isPositive(number) {
+        return new Promise ((resolve, reject) => {
+          if (number > 0) {
+            resolve("Number is positive");
+          } 
+          else {
+            reject("Number is negative");
+          }
+        })
+      }
+      isPositive(1).then((result) => {
+        console.log(result);
+      })
+      .catch(error => console.log(error));
+
+      const username = document.getElementById("username");
+      const password = document.getElementById("password");
+      const submit = document.getElementById("submit");
+
+      
+
+      function login(username, password) {
+        return new Promise ((resolve, reject) => {
+          if (username === "admin" && password === "1234") {
+            resolve("Logged in")
+          }
+          else {
+            reject("Login failed")
+          }
+        })
+      }
+      
+
+      submit.addEventListener('click', () => {
+        login(username.value,password.value).then((resolve) => {
+        console.log(resolve);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      })
+
+      function delay(ms) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          },ms)
+        })
+      }
+      delay(2000).then(() => console.log("2 sekunde prošle"));
+
+      const users = [{name: "Ana"}, {name: "Marko"}, {name: "Iva"}];
+
+      function fetchUser(user) {
+        return new Promise ((resolve) => {
+          setTimeout(()=>{
+            resolve(user);
+          },2000);
+        })
+      }
+
+      Promise.all(users.map(user => 
+        fetchUser(user)
+      )).then(result => 
+        result.forEach(users => 
+          console.log(users.name)
+        )
+      );
+
+
+
+    </script>
+  </body>
+</html>
