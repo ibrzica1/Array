@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+
+     fetch("https://jsonplaceholder.typicode.com/posts")
+     .then(response => response.json())
+     .then(posts => {
+      const user1 = posts.filter(post => post.userId === 1);
+      const user2 = posts.filter(post => post.userId === 2);
+      function getBigger(user1,user2) {
+        if (user1.length > user2.length) {
+          return user1;
+        }
+        else {
+          return user2
+        }
+      }
+      const winner = getBigger(user1,user2);
+       
+      
+      console.log("Who has more posts between two users");
+      console.log("User under ID: " + winner[0].userId + " has more posts")
+      
+
+     })
+
+     fetch("https://jsonplaceholder.typicode.com/posts")
+     .then(response => response.json())
+     .then(data => {
+      const firstFive = data.slice(0,5);
+      firstFive.forEach(element => {
+        fetch(`https://jsonplaceholder.typicode.com/comments?postId=${element.id}`)
+        .then(response => response.json())
+        .then(comments => {
+          console.log("Naslov:", element.title);
+          console.log(comments.length + " komentara");
+          console.log("--------------");
+        })
+      });
+    })
+
+    fetch("https://jsonplaceholder.typicode.com/posts")
+    .then(response => response.json())
+    .then(posts => {
+      let max = 0;
+      let longestPost = null;
+      posts.forEach((post) => {
+        if(post.body.length > max) {
+          max = post.body.length;
+          longestPost = post
+        }
+      })
+      fetch(`https://jsonplaceholder.typicode.com/comments?postId=${longestPost.id}`)
+      .then(response => response.json())
+      .then(data => {
+        data.forEach((e) => {
+          console.log(e.body);
+        })
+      })
+    })
+
+    fetch("https://jsonplaceholder.typicode.com/comments")
+  .then(response => response.json())
+  .then(comments => {
+    const brojKomentaraPoPostu = {};
+
+    // Brojimo komentare za svaki postId
+    comments.forEach(comment => {
+      const postId = comment.postId;
+      brojKomentaraPoPostu[postId] = (brojKomentaraPoPostu[postId] || 0) + 1;
+      
+    });
+    const brojPostova = Object.keys(brojKomentaraPoPostu).length;
+    const ukupanBrojKomentara = comments.length;
+
+    const prosek = ukupanBrojKomentara / brojPostova;
+
+    console.log("Ukupno komentara:", ukupanBrojKomentara);
+    console.log("Ukupno postova:", brojPostova);
+    console.log("Prosečan broj komentara po postu:", prosek.toFixed(2));
+  })
+
+  fetch("https://jsonplaceholder.typicode.com/posts")
+  .then(response => response.json())
+  .then(data => {
+    data.forEach((element) => {
+      const wordCount = element.title.split(" ").length;
+      console.log("Title: " + element.title + " " 
+        + wordCount + " words"
+      )
+    })
+  })
+  .catch(error => console.log(error))
+
+
+  fetch("https://jsonplaceholder.typicode.com/users")
+  .then(response => response.json())
+  .then(users => {
+    let max = 0;
+    let longestName = null;
+    users.forEach((user) => {
+      if(user.name.length > max) {
+        max = user.name.length;
+        longestName = user;
+      }
+    })
+    console.log("User with longest name is " + longestName.name)
+  })
+
+    </script>
+  </body>
+</html>
