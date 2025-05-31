@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+      function chaining(number) {
+        return new Promise((resolve) => {
+          return number;
+        }).then(number = number + 3).then(number = number * 2)
+        .then(console.log(number));
+      }
+      chaining(1);
+
+      fetch("https://jsonplaceholder.typicode.com/users/1")
+      .then(response => response.json())
+      .then(korisnik => console.log(korisnik.name))
+      .catch(error => console.log(error));
+
+      fetch("https://jsonplaceholder.typicode.com/posts")
+      .then(response => response.json())
+      .then((data) => {
+        data.forEach(element => {
+          console.log(element.title);
+        });
+      })
+      .catch(error => console.log(error));
+
+
+    </script>
+  </body>
+</html>
