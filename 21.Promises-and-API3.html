@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+
+      fetch("https://jsonplaceholder.typicode.com/posts")
+      .then(response => response.json())
+      .then(data => {
+        const postCount = {};
+        data.forEach((element) => {
+          const id = element.userId;
+          postCount[id] = (postCount[id] || 0) + 1;
+        })
+
+        let maxPosts = 0;
+        let userIdWithMostPosts = null;
+
+        for (let userId in postCount) {
+          if (postCount[userId] > maxPosts) {
+            maxPosts = postCount[userId];
+            userIdWithMostPosts = userId;
+          }
+        }
+
+        console.log(`User with ID ${userIdWithMostPosts} has the most posts (${maxPosts} posts).`);
+      })
+      .catch(error => console.error("Greška:", error));
+
+
+      fetch("https://jsonplaceholder.typicode.com/users")
+      .then(response => response.json())
+      .then(users => {
+        let bret = null;
+        users.forEach(user => {
+          if (user.username === "Bret") {
+            bret = user;
+          }
+        })
+        fetch("https://jsonplaceholder.typicode.com/posts")
+        .then(response => response.json())
+        .then(posts => {
+          console.log("Post titles of the user Bret")
+          posts.forEach(post => {
+            if(post.userId === bret.id) {
+              console.log(post.title)
+            }
+          })
+        })
+      })
+      .catch(error => console.log(error))
+
+
+      fetch("https://jsonplaceholder.typicode.com/posts")
+        .then(response => response.json())
+        .then(posts => {
+          let totalLength = 0;
+          let numOfPosts = 0;
+          posts.forEach(post => {
+            totalLength += post.body.length;
+            numOfPosts++
+          })
+          console.log(`Average body length is ${totalLength/numOfPosts} characters`)
+        })
+        .catch(error => console.log(error))
+
+        fetch("https://jsonplaceholder.typicode.com/posts")
+        .then(response => response.json())
+        .then(posts => {
+          let min = 1000;
+          let shortestTitle = null;
+          posts.forEach(post => {
+            if(post.title.length < min) {
+              min = post.title.legth;
+              shortestTitle = post;
+            }
+          })
+          fetch("https://jsonplaceholder.typicode.com/comments")
+          .then(response => response.json())
+          .then(comments => {
+            console.log("Shortest title comments");
+            comments.forEach(comment => {
+              if(comment.postId === shortestTitle.id) {
+                console.log("Comment: " + comment.body)
+              }
+            })
+          })
+        })
+        .catch(error => console.log(error))
+
+        fetch("https://jsonplaceholder.typicode.com/users")
+      .then(response => response.json())
+      .then(users => {
+        const safeUsers = users.filter(user => user && user.address && user.address.city);
+        const biggestCity = safeUsers.sort((a,b) => {
+          return b.address.city.length - a.address.city.length;
+        });
+        console.log("Users cities sorted by length")
+        biggestCity.forEach(user => {
+          console.log(`Name: ${user.name}, City length ${user.address.city.length}`);
+        })
+      })
+      .catch(error => console.log(error))
+
+      fetch("https://jsonplaceholder.typicode.com/posts")
+      .then(response => response.json())
+      .then(posts => {
+
+      })
+
+
+
+    </script>
+  </body>
+</html>
