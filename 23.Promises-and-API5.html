@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--
+    
+
+    -->
+
+
+  </head>
+  <body>
+
+
+    <script>
+      Promise.all([
+        fetch("https://jsonplaceholder.typicode.com/users").then(res=>res.json()),
+        fetch("https://jsonplaceholder.typicode.com/posts").then(res=>res.json())
+      ])
+      .then(([users,posts]) => {
+        let userBodyTotal = {};
+        users.forEach(user => {
+          const userId = user.id;
+          let bodyWords = [];
+          let postsBodyCount = 0;
+          posts.forEach(post => {
+            if(post.userId === userId) {
+              bodyWords.push(post.body.split(" "));
+            }
+          })
+          bodyWords.forEach(word => {
+            postsBodyCount += word.length;
+          })
+          userBodyTotal[userId] = postsBodyCount;
+        })
+        const sorted = Object.entries(userBodyTotal)
+        .sort((a,b) => b[1] - a[1]);
+        const userWithMostWordsId = parseInt(sorted[0][0]);
+        const userWithMostWords = users.filter(user => user.id === userWithMostWordsId).shift();
+        console.log(`User with most words is ${userWithMostWords.name}`);
+      })
+      .catch(error => console.log(error))
+
+
+      fetch("https://jsonplaceholder.typicode.com/comments")
+      .then(response => response.json())
+      .then(comments => {
+        let countWords = 0;
+        let countComment = 0;
+        comments.forEach(comment => {
+          countWords += comment.body.split(" ").length;
+          countComment++
+        })
+        const averageWordCount = (countWords / countComment).toFixed(2);
+        console.log(`Average word count in comments is ${averageWordCount} words`);
+      })
+      .catch(error => console.log(error))
+
+
+      Promise.all([
+        fetch("https://jsonplaceholder.typicode.com/users").then(res=>res.json()),
+        fetch("https://jsonplaceholder.typicode.com/posts").then(res=>res.json()),
+        fetch("https://jsonplaceholder.typicode.com/comments").then(res=>res.json())
+      ])
+      .then(([users,posts,comments]) => {
+        let commentsByPost = {};
+        comments.forEach(comment => {
+          const postId = comment.postId;
+          commentsByPost[postId] = (commentsByPost[postId] || 0) + 1;
+        })
+        let postsByUser = {};
+        posts.forEach(post => {
+          let commentCount = 0;
+          const postId = post.id;
+          const userId = post.userId;
+          commentCount = commentsByPost[postId] || 0; 
+          postsByUser[userId] = (postsByUser[userId] || 0) + commentCount;
+        })
+        let sortedUsers = Object.entries(postsByUser).sort((a,b) => b.length - a.length);
+      })
+      .catch(error => console.log(error))
+
+      fetch("https://jsonplaceholder.typicode.com/users")
+      .then(res=>res.json())
+      .then(users => {
+        let vowelsInAddress = {}
+        users.forEach(user => {
+          let vowelCount = 0;
+          const userId = user.id;
+          const city =  Array.from(user.address.city);
+          city.forEach(letter => {
+            if ("aeiou".includes(letter)) {
+              vowelCount++
+            }
+            vowelsInAddress[userId] = vowelCount;
+          })
+
+        })
+        const userWithMostVowels = users.filter(user => user.id === parseInt(Object.entries(vowelsInAddress)
+        .sort((a,b) => b[1] -a[1])[0][0]))[0]
+        console.log(`User with most vowels in the name of his city is ${userWithMostVowels.name} with ${vowelsInAddress[1]} vowels`);
+      })
+      .catch(error => console.log(error))
+
+
+      Promise.all([
+       fetch("https://jsonplaceholder.typicode.com/posts").then(res=>res.json()),
+        fetch("https://jsonplaceholder.typicode.com/comments").then(res=>res.json())
+      ])
+      .then(([posts,comments]) => {
+        let commentsInPosts = {};
+        comments.forEach(comment => {
+          const postId = comment.postId;
+          commentsInPosts[postId] = (commentsInPosts[postId] || 0) + 1;
+        })
+        const postWithLeastComments = posts.filter(post => post.id === parseInt(Object.entries(commentsInPosts)
+        .sort((a,b) => a[1] - b[1])))[0];
+        console.log(`Post with least comments is: ${postWithLeastComments.body} \nComments: `);
+        comments.forEach(comment => {
+          if (comment.postId === postWithLeastComments.id) {
+            console.log(`- ${comment.body}`)
+          }
+        })
+      })
+      .catch(error => console.log(error))
+
+
+      Promise.all([
+       fetch("https://jsonplaceholder.typicode.com/posts").then(res=>res.json()),
+        fetch("https://jsonplaceholder.typicode.com/users").then(res=>res.json())
+      ])
+      .then(([posts,users]) => {
+        let postsByUser = {};
+        let postLengthByUser = {};
+        let postLengthAverageByUser = {};
+        posts.forEach(post => {
+          const userId = post.userId;
+          postLengthByUser[userId] = (postLengthByUser[userId] || 0) + post.title.length;
+          postsByUser[userId] = (postsByUser[userId] || 0) + 1;
+        })
+        posts.forEach(post => {
+          const userId = post.userId;
+          postLengthAverageByUser[userId] = postLengthByUser[userId] / postsByUser[userId];
+        })
+        console.log(postLengthAverageByUser)
+        console.log("Average length of title by user:")
+        users.forEach(user => {
+          const userId = user.id;
+          console.log(`${user.name}: ${postLengthAverageByUser[userId]} letters`);
+        })
+      })
+      .catch(error => console.log(error))
+
+      fetch("https://jsonplaceholder.typicode.com/users")
+      .then(res=>res.json())
+      .then(users => {
+        let companyLengthByUser = {};
+        users.forEach(user => {
+          const userId = user.id;
+          companyLengthByUser[userId] = user.company.name.length;
+        })
+        const longestUser = users.find(user => user.id === parseInt(Object.entries(companyLengthByUser).sort((a,b) => b[1] - a[1])[0][0]));
+        console.log(`User with the longest company name is ${longestUser.name} \nCompany: ${longestUser.company.name} (${longestUser.company.name.length} letters)`);
+      })
+      .catch(error => console.log(error))
+      
+
+    </script>
+  </body>
+</html>
