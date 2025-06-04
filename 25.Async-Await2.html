@@ -13,7 +13,82 @@
 
 
     <script>
-      
+      async function averagePostLength() {
+        try{
+          const postResnsponse = await fetch("https://jsonplaceholder.typicode.com/posts");
+        const userResponse = await fetch("https://jsonplaceholder.typicode.com/users");
+        const postData = await postResnsponse.json();
+        const userData = await userResponse.json();
+
+        let postLength = {};
+        let postCount = {};
+        let averageLength = {};
+        postData.forEach(post => {
+          const userId = post.userId;
+          postLength[userId] = (postLength[userId] || 0) + post.body.length;
+          postCount[userId] = (postCount[userId] || 0) + 1;
+          averageLength[userId] = (postLength[userId] / postCount[userId]) || 0;
+        })
+        const longestAverageUserId = parseInt(Object.entries(averageLength).sort((a,b)=> b[1] - a[1])[0][0]);
+        const longestAverageUser = userData.find(user => user.id === longestAverageUserId)
+        console.log(`User with the longest average post length is ${longestAverageUser.name} with ${parseInt(Object.entries(averageLength).sort((a,b)=> b[1] - a[1])[0][1])} length average`)
+        }
+        catch (error){
+          console.log(error);
+        }
+      }
+      averagePostLength();
+
+      async function userWithMostComments() {
+        try {
+          const postResnsponse = await fetch("https://jsonplaceholder.typicode.com/posts");
+          const userResponse = await fetch("https://jsonplaceholder.typicode.com/users");
+          const commentResponse = await fetch("https://jsonplaceholder.typicode.com/comments");
+          const commentData = await commentResponse.json();
+          const postData = await postResnsponse.json();
+          const userData = await userResponse.json();
+
+          let commentsByPost = {};
+          let commentsByUser = {};
+          
+          commentData.forEach(comment => {
+            const postId = comment.postId;
+            commentsByPost[postId] = (commentsByPost[postId] || 0) + 1;
+          });
+          postData.forEach(post => {
+            const userId = post.userId;
+            commentsByUser[userId] = (commentsByUser[userId] || 0) + commentsByPost[post.id];
+          })
+          const mostCommentsUserId = parseInt(Object.entries(commentsByUser).sort((a,b) => b[1] - a[1])[0][0]);
+          const mostCommentsUser = userData.find(user => user.id === mostCommentsUserId);
+          console.log(`User with most comments on posts is ${mostCommentsUser.name} with ${parseInt(Object.entries(commentsByUser).sort((a,b) => b[1] - a[1])[0][1])} comments`)
+          }
+          catch (error){
+          console.log(error);
+        }
+      }
+      userWithMostComments()
+
+      async function shortestTitle() {
+        try {
+          const postResnsponse = await fetch("https://jsonplaceholder.typicode.com/posts");
+          const userResponse = await fetch("https://jsonplaceholder.typicode.com/users");
+          const postData = await postResnsponse.json();
+          const userData = await userResponse.json();
+
+          let titleLength = {};
+
+          postData.forEach(post => {
+            const postId = post.id;
+            titleLength[postId] = (titleLength[postId] || 0) + post.title.length;
+          })
+          console.log(titleLength);
+        }
+        catch (error){
+          console.log(error);
+        }
+      }
+      shortestTitle();
 
 
     </script>
