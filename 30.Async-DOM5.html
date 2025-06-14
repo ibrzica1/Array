@@ -5,8 +5,36 @@
       .container{
         display: flex;
         flex-direction: row;
+        position: relative;
         gap: 100px;
       }
+      #commentContainer{
+        display: flex;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        width: 700px;
+        height: 100%;
+        left: 100px;
+        opacity: 0.9;
+        background-color: white;
+        color: black;
+        display: none;
+      }
+      .imageContainer{
+        display: block;
+        flex-direction: row;
+      }
+      li {
+      cursor: pointer;
+      padding: 5px;
+    }
+    .favorite {
+      color: gold;
+    }
+    .not-favorite {
+      color: grey;
+    }
     </style>
     <!--
     
@@ -21,10 +49,13 @@
     <input  id="inputSearch" type="text" placeholder="Search country...">
     <button id="getCountryBtn">Search</button>
     <button id="getPokemons">Get Pokemons</button>
+    <button id="getUsers">Get Users</button>
     <div class="container">
       <div id="imageContainer"></div>
       <div id="infoContainer"></div>
+      <div id="commentContainer"></div>
     </div>
+    <ul id="userList"></ul>
     
 
     <script>
@@ -33,8 +64,109 @@ const getUserBtn = document.getElementById("getUserBtn");
 const getCountryBtn = document.getElementById("getCountryBtn");
 const inputSearch = document.getElementById("inputSearch");
 const getPokemons = document.getElementById("getPokemons");
+const getUsers = document.getElementById("getUsers");
 const imageContainer = document.getElementById("imageContainer");
 const infoContainer = document.getElementById("infoContainer");
+const commentContainer = document.getElementById("commentContainer");
+const userList = document.getElementById("userList");
+
+let favoriteUsers = JSON.parse(localStorage.getItem("favorites")) || [];
+
+getUsers.addEventListener("click", async ()=>{
+  imageContainer.innerHTML = "";
+  infoContainer.innerHTML = "";
+  userList.innerHTML = "";
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const data = await response.json();
+    
+    data.forEach(user => {
+      const userElement = document.createElement("li");
+      const isFavorite = favoriteUsers.includes(user.id);
+      
+      userElement.innerHTML = `${user.name} <span class="${isFavorite ? 'favorite' : 'not-favorite'}">⭐</span>`;
+      userElement.querySelector("span").addEventListener("click",(e)=>{
+        e.stopPropagation();
+        toggleFavorites(user.id)
+      })
+      
+      userElement.style.cursor = "pointer";
+      userElement.addEventListener("click",()=>{
+        getPosts(user.id);
+      })
+      userList.appendChild(userElement);
+      
+    })
+  }
+  catch(error){
+    console.log(error);
+  }
+})
+
+function toggleFavorites(userId) {
+  if(favoriteUsers.includes(userId)){
+    favoriteUsers = favoriteUsers.filter(id => id !== userId);
+  }
+  else {
+    favoriteUsers.push(userId);
+  }
+  localStorage.setItem("favorites",JSON.stringify(favoriteUsers));
+}
+
+async function getPosts(id) {
+  infoContainer.innerHTML = "";
+  try{
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${id}`);
+    const data = await response.json();
+
+    data.forEach(post => {
+      const postTitle = document.createElement("h3");
+      postTitle.textContent = `Title: ${post.title}`;
+      postTitle.style.cursor = "pointer";
+      postTitle.addEventListener("click",()=>{
+        getComments(post.id);
+      })
+      const postBody = document.createElement("p");
+      postBody.textContent = `Body: ${post.body}`;
+      postBody.style.cursor = "pointer";
+      postBody.addEventListener("click",()=>{
+        getComments(post.id);
+      })
+      infoContainer.appendChild(postTitle);
+      infoContainer.appendChild(postBody);
+    })
+
+
+  }
+  catch(error){
+    console.log(error);
+  }
+}
+
+async function getComments(id) {
+
+  commentContainer.innerHTML = "";
+  try {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${id}`);
+  const data = await response.json();
+
+
+  data.forEach(comment => {
+    const commentName = document.createElement("h3");
+    commentName.textContent = `Title: ${comment.name}`;
+    const commentBody = document.createElement("p");
+    commentBody.textContent = `Body: ${comment.body}`;
+
+    commentContainer.appendChild(commentName);
+    commentContainer.appendChild(commentBody);
+    commentContainer.style.display = "block";
+
+  })
+  }
+  catch(error) {
+    console.log(error);
+  }
+}
 
 getPokemons.addEventListener("click", async ()=> {
   imageContainer.innerHTML = "";
