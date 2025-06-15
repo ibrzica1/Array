@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+   <style>
+    #randomUsersGrid{
+      --gap:16px;
+      --num-cols: 4;
+      --row-height: 200px;
+      box-sizing: border-box;
+      padding: var(--gap);
+
+      display: grid;
+      grid-template-columns: repeat(var(--num-cols), 1fr);
+    }
+
+    #randomUsersGrid div{
+      padding: 10px;
+      border: 1px solid black;
+    }
+
+    #favoritesGrid{
+      --gap:16px;
+      --num-cols: 4;
+      --row-height: 200px;
+      box-sizing: border-box;
+      padding: var(--gap);
+
+      display: grid;
+      grid-template-columns: repeat(var(--num-cols), 1fr);
+    }
+    
+   </style>
+
+
+  </head>
+  <body>
+    <h2>Random Users</h2>
+    <div id="randomUsersGrid"></div>
+    <button id="showFavorites">Show Favorites</button>
+    <div id="favoritesGrid"></div>
+
+    <script>
+      const randomUsersGrid = document.getElementById("randomUsersGrid");
+      const showFavorites = document.getElementById("showFavorites");
+      const favoritesGrid = document.getElementById("favoritesGrid");
+      let isfavorite = JSON.parse(localStorage.getItem("favorite")) || [];
+      
+      async function fetchUsers() {
+        try{
+          const response = await fetch("https://randomuser.me/api/?results=8");
+          const data = await response.json()
+
+          displayUsers(data.results);
+        }
+        catch(error)
+        {
+          console.log(error);
+        }
+      }
+      fetchUsers()
+
+      function displayUsers(users) {
+        users.forEach(user => {
+          const userId = user.login.uuid;
+          const div = document.createElement("div");
+          div.id = `container${userId}`;
+          console.log(div);
+          const image = document.createElement("img");
+          image.src = user.picture.large;
+          const name = document.createElement("h4");
+          name.textContent = `Name: ${user.name.first}`;
+          const location = document.createElement("h4");
+          location.textContent = `${user.location.city}, ${user.location.country}`;
+          const button = document.createElement("button");
+          button.innerHTML = "Favorite";
+          button.addEventListener("click",()=>{
+            
+            toggleFavorites(user);
+            div.style.backgroundColor = "gold";
+          })
+          div.appendChild(image);
+          div.appendChild(name);
+          div.appendChild(location);
+          div.appendChild(button)
+
+          randomUsersGrid.appendChild(div);
+        })
+      }
+
+      function toggleFavorites(user) {
+        const exists = isfavorite.some(fav => fav.login.uuid === user.login.uuid);
+
+        if (exists) {
+          isfavorite = isfavorite.filter(fav => fav.login.uuid !== user.login.uuid);
+        } else {
+          isfavorite.push(user);
+        }
+        console.log(isfavorite);
+        localStorage.setItem("favorite",JSON.stringify(isfavorite));
+      }
+
+      function displayFavorites(array) {
+        if(favoritesGrid.innerHTML.length > 0){
+          showFavorites.innerHTML = "Show Favorites";
+          favoritesGrid.innerHTML = "";
+        }
+        else{
+          favoritesGrid.innerHTML = "";
+          showFavorites.innerHTML = "Hide Favorites";
+            array.forEach(user => {
+              const userId = user.login.uuid;
+              const div = document.createElement("div");
+              div.id = `container${userId}`;
+              console.log(div);
+              const image = document.createElement("img");
+              image.src = user.picture.large;
+              const name = document.createElement("h4");
+              name.textContent = `Name: ${user.name.first}`;
+              const location = document.createElement("h4");
+              location.textContent = `${user.location.city}, ${user.location.country}`;
+              div.appendChild(image);
+              div.appendChild(name);
+              div.appendChild(location);
+              favoritesGrid.appendChild(div);
+        })
+        }
+      }
+
+      showFavorites.addEventListener("click",()=>{
+        displayFavorites(isfavorite);
+      })
+
+
+
+    </script>
+  </body>
+</html>
